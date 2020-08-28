@@ -29,4 +29,26 @@ class CategoryController extends Controller
         $obj = category::where('id','=',$request->all()[0])->delete();
             return response()->json(['message'=>'Category Deleted','status'=>200]);
     }
+
+    public function edit(Request $request)
+    {
+        $obj = category::where('id','=',$request->all()[0])->first();
+
+        if($obj){
+            return response()->json(['data'=>$obj,'status'=>200]);
+        }
+    }
+
+
+    public function update(Request $request)
+    {
+        //return response()->json($request->id);
+        $obj = Category::find($request->id)->update([
+            'name' => $request->name,
+        ]);
+
+        if($obj){
+            return response()->json(['status'=>200]);
+        }
+    }
 }
