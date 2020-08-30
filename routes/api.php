@@ -17,8 +17,17 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+//Category
 Route::post('category/delete','CategoryController@delet');
 Route::post('category/create','CategoryController@create');
 Route::get('category/show','CategoryController@show');
 Route::post('category/edit','CategoryController@edit');
 Route::post('category/update','CategoryController@update');
+
+//SUB CATEGORY
+Route::get('category/getallCategoryforsubcategories','SubCategoryController@getallCategoryforsubcategory');
+Route::post('savesubcategories','SubCategoryController@savesubcategories');
+Route::get('subcategory/show','SubCategoryController@subcategoryShow');
+Route::post('subcategory/edit','SubCategoryController@subcategoryEdit');
+Route::post('subcategory/delete','SubCategoryController@subcategoryDelete');
+Route::post('subcategory/update','SubCategoryController@subcategoryUpdate');
