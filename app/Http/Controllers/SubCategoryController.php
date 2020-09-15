@@ -30,10 +30,12 @@ class SubCategoryController extends Controller
 
     public function subcategoryShow()
     {
-        $obj    =   DB::table('sub_categories')
-                    ->join('categories', 'categories.id', '=', 'sub_categories.category_id')
+        $obj    =   SubCategory::
+                    Leftjoin('categories', 'categories.id', '=', 'sub_categories.category_id')
                     ->select('categories.name', 'sub_categories.id', 'sub_categories.subcategory')
                     ->get();
+       // $obj = SubCategory::orderBy( 'id','asc')->get();
+       
         return response()->json($obj);
     }
 
@@ -47,6 +49,7 @@ class SubCategoryController extends Controller
 
     public function subcategoryDelete(Request $request)
     {
+        //return response()->json($request->all()[0]);
         $obj = SubCategory::find($request->all()[0])->delete();
             return response()->json(['message'=>'Sub Category Deleted','status'=>200]);
     }

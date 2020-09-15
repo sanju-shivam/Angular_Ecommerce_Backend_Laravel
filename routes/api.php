@@ -31,3 +31,24 @@ Route::get('subcategory/show','SubCategoryController@subcategoryShow');
 Route::post('subcategory/edit','SubCategoryController@subcategoryEdit');
 Route::post('subcategory/delete','SubCategoryController@subcategoryDelete');
 Route::post('subcategory/update','SubCategoryController@subcategoryUpdate');
+
+
+//BRANDS
+Route::post('brand/delete','BrandController@delet');
+Route::post('brand/create','BrandController@create');
+Route::get('brand/show','BrandController@show');
+Route::post('brand/edit','BrandController@edit');
+Route::post('brand/update','BrandController@update');
+
+
+//PRODUCT
+Route::get('product/gtallbrandcatsubcat','ProductController@getCat_SubCat_brand');
+Route::post('product/save','ProductController@saveProduct');
+Route::get('product/show','ProductController@show');
+Route::post('product/delete','ProductController@delete');
+Route::post('product/update','ProductController@update');
+Route::post('product/singelProduct','ProductController@viewProduct');
+
+
+//ADD IMAGE OF SINGLE PRODUCT
+Route::post('product/addImage','ProductController@addImage');
