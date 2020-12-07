@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 //Category
 Route::post('category/delete','CategoryController@delet');
 Route::post('category/create','CategoryController@create');
@@ -47,8 +48,21 @@ Route::post('product/save','ProductController@saveProduct');
 Route::get('product/show','ProductController@show');
 Route::post('product/delete','ProductController@delete');
 Route::post('product/update','ProductController@update');
+Route::post('product/statusupdate','ProductController@statusupdate');
 Route::post('product/singelProduct','ProductController@viewProduct');
+Route::post('product/editProduct','ProductController@editSingleProduct');
 
 
 //ADD IMAGE OF SINGLE PRODUCT
 Route::post('product/addImage','ProductController@addImage');
+Route::post('product/editSingleProductImage','ProductController@editSingleProductImage');
+Route::post('product/deleteSingleProductImage','ProductController@deleteSingleProductImage');
+
+
+
+// BANNER 
+Route::post('banner/save','BannerController@save');
+
+
+// Coupons 
+Route::resource('coupons','CouponsController');

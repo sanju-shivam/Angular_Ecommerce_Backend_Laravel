@@ -9,6 +9,7 @@ class BrandController extends Controller
 {
     public function create(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
     	$obj = new Brand;
     	$obj->name = $request->name;
     	$obj->save();
@@ -19,21 +20,22 @@ class BrandController extends Controller
     public function show()
     {
     	$obj = Brand::all();
-
+        header('Access-Control-Allow-Origin','*');
     	return response()->json($obj);
     }
 
 
     public function delet(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
         $obj = Brand::where('id','=',$request->all()[0])->delete();
-            return response()->json(['message'=>'Brand Deleted','status'=>200]);
+        return response()->json(['message'=>'Brand Deleted','status'=>200]);
     }
 
     public function edit(Request $request)
     {
         $obj = Brand::where('id','=',$request->all()[0])->first();
-
+        header('Access-Control-Allow-Origin','*');
         if($obj){
             return response()->json(['data'=>$obj,'status'=>200]);
         }
@@ -42,7 +44,7 @@ class BrandController extends Controller
 
     public function update(Request $request)
     {
-        //return response()->json($request->id);
+        header('Access-Control-Allow-Origin','*');
         $obj = Brand::find($request->id)->update([
             'name' => $request->name,
         ]);

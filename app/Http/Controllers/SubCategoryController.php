@@ -19,6 +19,7 @@ class SubCategoryController extends Controller
     public function savesubcategories(Request $Request)
     {
     	//return response()->json($Request->all());
+        header('Access-Control-Allow-Origin','*');
     	$obj= new SubCategory;
     	$obj->category_id = $Request->CategoryId;
     	$obj->subcategory = $Request->SubCategoryName;
@@ -30,6 +31,7 @@ class SubCategoryController extends Controller
 
     public function subcategoryShow()
     {
+        header('Access-Control-Allow-Origin','*');
         $obj    =   SubCategory::
                     Leftjoin('categories', 'categories.id', '=', 'sub_categories.category_id')
                     ->select('categories.name', 'sub_categories.id', 'sub_categories.subcategory')
@@ -41,6 +43,7 @@ class SubCategoryController extends Controller
 
     public function subcategoryEdit(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
         $obj = SubCategory::where('id','=',$request->all()[0])->first();
         if($obj){
             return response()->json(['data'=>$obj,'status'=>200]);
@@ -49,6 +52,7 @@ class SubCategoryController extends Controller
 
     public function subcategoryDelete(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
         //return response()->json($request->all()[0]);
         $obj = SubCategory::find($request->all()[0])->delete();
             return response()->json(['message'=>'Sub Category Deleted','status'=>200]);
@@ -56,6 +60,7 @@ class SubCategoryController extends Controller
 
     public function subcategoryUpdate(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
         $obj = SubCategory::find($request->id)->update([
             'name' => $request->name,
             'category_id' => $request->CategoryId,

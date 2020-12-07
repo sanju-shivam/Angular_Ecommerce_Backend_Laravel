@@ -9,11 +9,13 @@ use App\Brand;
 use App\Product;
 use App\ProductImage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class ProductController extends Controller
 {
     public function getCat_SubCat_brand()
     {
+        header('Access-Control-Allow-Origin','*');
     	$categories = category::all();
     	$subcategories = SubCategory::all();
     	$brands = Brand::all();
@@ -27,6 +29,7 @@ class ProductController extends Controller
 
     public function saveProduct(Request $request)
     {  
+        header('Access-Control-Allow-Origin','*');
         $validator=Validator::make($request->all(),[
             'name'=>'required',
             'BrandId'=>'required',
@@ -45,6 +48,7 @@ class ProductController extends Controller
         }
         else
         {
+            header('Access-Control-Allow-Origin','*');
             $p = new Product;
             $p->name = $request->name;  
             $p->category_id = $request->CategoryId;
@@ -75,6 +79,7 @@ class ProductController extends Controller
 
     public function show()
     {
+        header('Access-Control-Allow-Origin','*');
         $products = Product::all();
         return response()->json($products);
     }
@@ -84,6 +89,7 @@ class ProductController extends Controller
     public function delete(Request $request)
     {
         //return response()->json($request->all()[0]);
+        header('Access-Control-Allow-Origin','*');
         $obj = Product::find($request->all()[0])->delete();
         $product_images = ProductImage::where('product_id','=',$request->all()[0])->delete();
         if($obj){
@@ -101,13 +107,13 @@ class ProductController extends Controller
 
     public function update(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
         $validator=Validator::make($request->all(),[
             'name'=>'required',
             'BrandId'=>'required',
             'CategoryId'=>'required',
             'SubCategoryId' => 'required',
             'price'=>'required',
-            'image' => 'required',
             'code' => 'required',
         ]);
 
@@ -117,22 +123,36 @@ class ProductController extends Controller
         }
         else
         {
-            $p = Product::find($request->id)->update([
-                'name' => $request->name,  
-                'category_id' => $request->CategoryId,
-                'brand_id' => $request->BrandId,
-                'description' => $request->Description,
-                'price' => $request->price,
-                'subcategory_id' => $request->SubCategoryId,
-                'quantity' => $request->Quantity,
-                'discount_price' => $request->discountprice,
-                'image' => $request->image,
-                'code' => $request->code,
-            ]);
-
+            if(!empty($request->image)){
+                $p = Product::find($request->id)->update([
+                    'name' => $request->name,  
+                    'category_id' => $request->CategoryId,
+                    'brand_id' => $request->BrandId,
+                    'description' => $request->Description,
+                    'price' => $request->price,
+                    'subcategory_id' => $request->SubCategoryId,
+                    'quantity' => $request->Quantity,
+                    'discount_price' => $request->discountprice,
+                    'image' => $request->image,
+                    'code' => $request->code,
+                ]);
+            }else{
+                $p = Product::find($request->id)->update([
+                    'name' => $request->name,  
+                    'category_id' => $request->CategoryId,
+                    'brand_id' => $request->BrandId,
+                    'description' => $request->Description,
+                    'price' => $request->price,
+                    'subcategory_id' => $request->SubCategoryId,
+                    'quantity' => $request->Quantity,
+                    'discount_price' => $request->discountprice,
+                    'code' => $request->code,
+                ]);
+            }
             if($p){
                 return response()->json([
                     'status'=>200,
+                    
                 ]);
             }
             else{
@@ -147,6 +167,7 @@ class ProductController extends Controller
 
     public function addImage(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
         $validator=Validator::make($request->all(),[
             'image' => 'required',
             'ProductId' => 'required',
@@ -157,6 +178,7 @@ class ProductController extends Controller
             return response()->json(['error'=>'something went wrong', 'status'=>409,]);
         }
 
+        header('Access-Control-Allow-Origin','*');
         $ProductAddImageObject = ProductImage::create([
             'product_id' => $request->ProductId,
             'image' => $request->image,
@@ -175,6 +197,7 @@ class ProductController extends Controller
     public function viewProduct(Request $request)
     {
         //return response()->json($request->id);
+        header('Access-Control-Allow-Origin','*');
         $a = Product::find($request->id);
         $categoryname = category::find($a->category_id)->first()->name;
         $SubCategory =  SubCategory::find($a->subcategory_id)->first()->subcategory;
@@ -192,8 +215,48 @@ class ProductController extends Controller
 
     public function showSingleProduct($id)
     {
+        header('Access-Control-Allow-Origin','*');
         $products = Product::Find($id);
-        
         return response()->json($products);
     }
+
+
+    public function editSingleProduct(Request $request)
+    {
+        header('Access-Control-Allow-Origin','*');
+        $product = Product::find($request->id);
+        
+        return response()->json([ 'product'=> $product ]);
+    }
+
+    public function editSingleProductImage(Request $request)
+    {
+        header('Access-Control-Allow-Origin','*');
+        $productImages = ProductImage::where('product_id','=',$request->id)->get();
+        return response()->json([ 'productImage' => $productImages ]);
+    }
+
+    public function deleteSingleProductImage(Request $request)
+    {
+        header('Access-Control-Allow-Origin','*');
+        $product = ProductImage::where('id','=',$request->id)->where('product_id','=',$request->product_id['id'])->delete();
+        if($product){
+            return response()->json(['status' => 200]);
+        }
+    }
+
+
+    public function statusupdate(Request $request)
+    {
+        header('Access-Control-Allow-Origin','*');        
+        $prodcut = Product::find($request[1])->update([
+            'status' => $request[0]
+        ]);
+        if($prodcut)
+            return 1;
+        else
+            return 0;
+
+    }
+
 }

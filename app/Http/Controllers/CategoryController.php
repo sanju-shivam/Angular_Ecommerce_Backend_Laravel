@@ -9,6 +9,7 @@ class CategoryController extends Controller
 {
     public function create(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
     	$obj = new category;
     	$obj->name = $request->name;
     	$obj->save();
@@ -18,6 +19,8 @@ class CategoryController extends Controller
 
     public function show()
     {
+    
+        header('Access-Control-Allow-Origin','*');
     	$obj = category::all();
 
     	return response()->json($obj);
@@ -26,6 +29,7 @@ class CategoryController extends Controller
 
     public function delet(Request $request)
     {
+        header('Access-Control-Allow-Origin','*');
         $obj = category::where('id','=',$request->all()[0])->delete();
             return response()->json(['message'=>'Category Deleted','status'=>200]);
     }
@@ -33,7 +37,7 @@ class CategoryController extends Controller
     public function edit(Request $request)
     {
         $obj = category::where('id','=',$request->all()[0])->first();
-
+        header('Access-Control-Allow-Origin','*');
         if($obj){
             return response()->json(['data'=>$obj,'status'=>200]);
         }
@@ -42,7 +46,7 @@ class CategoryController extends Controller
 
     public function update(Request $request)
     {
-        //return response()->json($request->id);
+        header('Access-Control-Allow-Origin','*');
         $obj = Category::find($request->id)->update([
             'name' => $request->name,
         ]);
