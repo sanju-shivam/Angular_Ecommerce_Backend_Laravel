@@ -15,8 +15,9 @@ class CouponsController extends Controller
      */
     public function index()
     {
-        $data = Coupons::all();
-         return response()->json(['status' => 200,'data' => $data]);
+        // $data = Coupons::all();
+        header('Access-Control-Allow-Origin','*');
+        return response()->json(['status' => 200,'data' => Coupons::all()]);
     }
 
     /**
@@ -39,7 +40,6 @@ class CouponsController extends Controller
     {
 
         header('Access-Control-Allow-Origin','*');
-        // return response(json_decode(json_encode($request->all()), true));
         $validator=Validator::make($request->all(),[
             'name'=>'required',
             'minimun_discount_amount'=>'required',
@@ -84,6 +84,7 @@ class CouponsController extends Controller
      */
     public function edit(Coupons $coupons,$id)
     {
+        header('Access-Control-Allow-Origin','*');
         return response()->json($coupons::find($id)->first());
     }
 
@@ -94,9 +95,22 @@ class CouponsController extends Controller
      * @param  \App\Coupons  $coupons
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Coupons $coupons)
+    public function update(Request $request, Coupons $coupons,$id)
     {
-        //
+        try{
+                header('Access-Control-Allow-Origin','*');
+                $coupons->find($id)->update([
+                    'name' => $request->name,
+                    'minimun_discount_amount' => $request->minimun_discount_amount,
+                    'discount_percent' => $request->discount_percent,
+                    'start_date' => $request->StartDate,
+                    'expiry_date' => $request->ExpiryDate,
+                ]);
+                return true;
+            }
+            catch(Exception $e){
+                return response()->json(['error'=>'some problem occures.try again'], 400);
+            }
     }
 
     /**
@@ -105,8 +119,14 @@ class CouponsController extends Controller
      * @param  \App\Coupons  $coupons
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Coupons $coupons)
+    public function destroy(Coupons $coupons,$id)
     {
-        //
+        header('Access-Control-Allow-Origin','*');
+        if($coupons::find($id)->delete()){
+                return true;
+        }
+        else{
+            return false;
+        }
     }
 }
