@@ -20,6 +20,7 @@ class CreateCouponsTable extends Migration
             $table->bigInteger('discount_percent');
             $table->date('start_date');
             $table->date('expiry_date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

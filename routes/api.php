@@ -62,6 +62,8 @@ Route::post('product/deleteSingleProductImage','ProductController@deleteSinglePr
 
 // BANNER 
 Route::post('banner/save','BannerController@save');
+Route::get('banner/getAll','BannerController@index');
+Route::post('banner/editbanner','BannerController@edit');
 
 
 // Coupons 

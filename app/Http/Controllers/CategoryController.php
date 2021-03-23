@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\category;
+use Cache;
 
 class CategoryController extends Controller
 {
@@ -21,8 +22,9 @@ class CategoryController extends Controller
     {
     
         header('Access-Control-Allow-Origin','*');
-    	$obj = category::all();
-
+    	$obj = Cache::remember('category', 1000, function () {
+           return  category::select('id','name')->get(); 
+        });
     	return response()->json($obj);
     }
 

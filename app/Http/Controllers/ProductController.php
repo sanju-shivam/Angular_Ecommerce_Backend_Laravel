@@ -202,7 +202,6 @@ class ProductController extends Controller
         $categoryname = category::find($a->category_id)->first()->name;
         $SubCategory =  SubCategory::find($a->subcategory_id)->first()->subcategory;
         $brand =  Brand::find($a->brand_id)->first()->name;
-         //dd($categoryname,$SubCategory, $brand);
         $productImages = ProductImage::where('product_id','=',$request->id)->get();
         return response()->json([
                     'product' =>$a,
