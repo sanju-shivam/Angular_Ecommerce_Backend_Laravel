@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Banner;
 use DB;
+use Cache;
 
 class BannerController extends Controller
 {
     public function index()
     {
         header('Access-Control-Allow-Origin','*');
-        $banners = Banner::all();
+        $banners = Cache::remember('all-banners', 60, function () {
+            return Banner::all();
+        });
 
         return response()->json([
             'status' => 200,
@@ -39,5 +42,11 @@ class BannerController extends Controller
         $banner = Banner::find($id)->first();
 
         return ($banner);
+    }
+
+    public function delete($id)
+    {
+        Banner::where('id','=',$id)->delete();
+        return response()->json('Banner deleted', 200);
     }
 }

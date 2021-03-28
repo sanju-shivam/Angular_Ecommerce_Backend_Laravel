@@ -62,7 +62,8 @@ Route::post('product/deleteSingleProductImage','ProductController@deleteSinglePr
 
 // BANNER 
 Route::post('banner/save','BannerController@save');
-Route::get('banner/getAll','BannerController@index');
+Route::get('banner/get/all','BannerController@index');
+Route::get('banner/delete/{id}','BannerController@delete');
 Route::post('banner/editbanner','BannerController@edit');
 
 
