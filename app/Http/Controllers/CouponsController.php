@@ -39,7 +39,7 @@ class CouponsController extends Controller
     public function store(Request $request)
     {
 
-        header('Access-Control-Allow-Origin','*');
+        //header('Access-Control-Allow-Origin','*');
         $validator=Validator::make($request->all(),[
             'name'=>'required',
             'minimun_discount_amount'=>'required',
